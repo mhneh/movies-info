@@ -2,12 +2,12 @@
 <div class="container">
 
     <!-- Portfolio Item Heading -->
-    <h1 class="my-4">{{movie.title}}
+    <h1 class="my-4">{{movie.title}},
         <small>{{movie.year}}</small>
     </h1>
 
     <!-- Portfolio Item Row -->
-    <div class="row">
+    <div class="row mb-3">
 
         <div class="col-md-8">
             <img class="img-fluid" src={{movie.img}} alt="" width="300">
@@ -24,10 +24,87 @@
                 <li>Genres: {{movie.genres}}</li>
             </ul>
         </div>
+    </div>
+
+    <div class="row">
+        <h4>Reviews</h4>
+        <div class="row d-flex justify-content-center">
+            <nav aria-label="navigation d-flex justify-content-center">
+                <ul class="pagination mx-auto">
+                    <li class="page-item">
+                        <a class="page-link" id="prev-page">Previous</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" id="next-page">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="list-group" id="reviews-list">
+        </div>
 
     </div>
 </div>
-<!-- /.row -->
-
 </div>
-<!-- /.container -->
+
+<script>
+    let page = 1;
+
+    fetchReview();
+
+    function fetchReview() {
+        $.ajax({
+            url: '/movies/{{movie.id}}/reviews?page=' + page,
+            type: 'GET',
+            success: function(response) {
+                console.log(response);
+
+                if (!response) {
+                  return null;
+                }
+
+                $('#reviews-list').empty();
+                response.forEach(review => {
+                    $('#reviews-list').append(`
+                    <a href="#" class="list-group-item list-group-item-action mb-2" aria-current="true">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1 fw-bold">${review.author}</h5>
+                            <small>${review.submissiondate}</small>
+                        </div>
+                        <hr/>
+                        <p class="mb-1">${review.reviewtitle}</p>
+                        <small><span class="fw-bold">Content:</span> ${review.reviewtext}</small>,
+                        <small><span class="fw-bold">Rating:</span> ${review.authorrating}</small>,
+                        <small><span class="fw-bold">Helpfulness Score:</span> ${review.helpfulnessscore}</small>,
+                    </a>
+                  `)
+                });
+
+                return response;
+            }
+        });
+    }
+
+
+    $(document).ready(function() {
+        $('#next-page').click(function () {
+          page++;
+          const reviews = fetchReview(page)
+          if (!reviews) {
+            page--;
+          };
+        })
+
+        $('#prev-page').click(function () {
+            page--;
+            if (page < 1) {
+              page = 1;
+            }
+            const reviews = fetchReview(page);
+            if (!reviews) {
+                page++;
+            };
+        })
+    });
+</script>

@@ -60,7 +60,20 @@ router.get('/search', async function (req, res) {
 
 router.get('/detail/:id', async function(req, res) {
   const movie = await DB.movie.findById(req.params.id);
-  res.render("movies/detail", {movie: movie});
+  const reviews = await DB.review.findAllyByMovieId(movie.id);
+  res.render("movies/detail", {
+    movie: movie,
+    reviews: reviews,
+    page: 1
+  });
+});
+
+router.get('/:id/reviews', async function (req, res) {
+  const page = (req.query.page) ? req.query.page : 1;
+  const pageSize = 2;
+  const reviews = await DB.review.findAllyByMovieId(req.params.id);
+  const pagingReviews = reviews.slice((page - 1) * pageSize, page * pageSize);
+  res.send(pagingReviews);
 });
 
 module.exports = router;

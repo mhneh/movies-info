@@ -68,10 +68,10 @@ module.exports = {
       await DB.query('DELETE FROM products WHERE uid=$1', [uid]);
     }
   },
-  productCat: {
-    all: async () => {
-      const categories = await DB.any('SELECT * FROM product_cats');
-      return categories;
+  review: {
+    findAllyByMovieId: async (movieId) => {
+      const reviews = await DB.any('SELECT * FROM reviews WHERE movieid=$1', [movieId]);
+      return reviews;
     }
   }
 };
