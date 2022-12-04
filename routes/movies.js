@@ -56,7 +56,12 @@ router.get('/search', async function (req, res) {
     prevPage: (page == 1) ? +page : (+page - 1),
     nextPage: +page + 1
   });
-})
+});
+
+router.get('/detail/:id', async function(req, res) {
+  const movie = await DB.movie.findById(req.params.id);
+  res.render("movies/detail", {movie: movie});
+});
 
 module.exports = router;
 

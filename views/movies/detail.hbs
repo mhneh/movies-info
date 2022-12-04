@@ -1,0 +1,33 @@
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Portfolio Item Heading -->
+    <h1 class="my-4">{{movie.title}}
+        <small>{{movie.year}}</small>
+    </h1>
+
+    <!-- Portfolio Item Row -->
+    <div class="row">
+
+        <div class="col-md-8">
+            <img class="img-fluid" src={{movie.img}} alt="" width="300">
+        </div>
+
+        <div class="col-md-4">
+            <h3 class="my-3">Movie Description</h3>
+            <p></p>
+            <h3 class="my-3">Details</h3>
+            <ul>
+                <li>Year: {{movie.year}}</li>
+                <li>Rating: {{movie.rating}}</li>
+                <li>Top Rank: {{movie.topRank}}</li>
+                <li>Genres: {{movie.genres}}</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+<!-- /.row -->
+
+</div>
+<!-- /.container -->

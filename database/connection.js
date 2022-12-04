@@ -36,12 +36,12 @@ module.exports = {
     },
 
     findById: async (id) => {
-      const movie = await DB.one("SELECT * FROM movies WHERE id=$1", [id]);
+      const movie = await DB.one('SELECT * FROM movies WHERE id=$1', [id]);
       return movie;
     },
 
     findByTitle: async (title) => {
-      const movies = await DB.any('SELECT * FROM movies WHERE title LIKE \'%$1#%\'', [title]);
+      const movies = await DB.any('SELECT * FROM movies WHERE title LIKE \'%$1#%\' OR genres LIKE \'%$1#%\'', [title]);
       return movies;
     },
 
