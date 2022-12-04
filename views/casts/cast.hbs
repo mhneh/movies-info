@@ -1,0 +1,32 @@
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Portfolio Item Heading -->
+    <h1 class="my-4">{{cast.legacyNameText}},
+        {{#if isMale}}
+            <small>Male</small>
+        {{else}}
+            <small>Male</small>
+        {{/if}}
+    </h1>
+
+    <!-- Portfolio Item Row -->
+    <div class="row mb-3">
+
+        <div class="col-md-8">
+            <img class="img-fluid" src="{{cast.image}}" />
+        </div>
+
+        <div class="col-md-4">
+            <h3 class="my-3">Real Name</h3>
+            <p>{{cast.realName}}</p>
+            <h3 class="my-3">Information</h3>
+            <ul>
+                <li><span class="fw-bold">Birth Date:</span> {{cast.birthDate}}</li>
+                <li><span class="fw-bold">Birth Place:</span> {{cast.birthPlace}}</li>
+                <li><span class="fw-bold">Height:</span> {{cast.heightCentimeters}}</li>
+                <li><span class="fw-bold">Nicknames:</span> {{cast.nicknames}}</li>
+            </ul>
+        </div>
+    </div>
+</div>

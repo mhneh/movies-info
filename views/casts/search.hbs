@@ -1,0 +1,51 @@
+<div class="container">
+
+    <div class="row d-flex justify-content-start">
+        <h1 class="text-center mb-3">Search for Cast name "{{name}}"</h1>
+
+        <form class="d-flex ms-auto m-5" role="search" method="get" action="/casts/search">
+            <input class="form-control me-2" type="search" placeholder="Title or Genres" name="name" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        <p><span class="fw-bold"> Page size:</span> {{pageSize}}</p>
+
+        <div class="row d-flex justify-content-center">
+            <nav aria-label="navigation d-flex justify-content-center">
+                <ul class="pagination mx-auto">
+                    <li class="page-item">
+                        <a class="page-link" href="/casts/search?name={{name}}&&page={{prevPage}}">Previous</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link active" href="/casts/search?name={{name}}&&page={{page}}">{{page}}</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="/casts/search?name={{name}}&&page={{nextPage}}">{{nextPage}}</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="/casts/search?name={{name}}&&page={{nextPage}}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        {{#each casts}}
+            <div class="col-sm-3">
+
+                <div class="card m-2 p-2">
+                    <img src={{this.image}} class="card-img-top" alt="{{this.legacyNameText}}" width="200">
+                    <div class="card-body">
+                        <h5 class="card-title text-center fw-bold">{{this.legacyNameText}}</h5>
+                        <hr/>
+                        <p class="card-text">
+                            <span class="fw-bold">Birth Date:</span> {{this.birthDate}},
+                            <span class="fw-bold">Height:</span> {{this.heightCentimeters}},
+                            <span class="fw-bold">Real Name::</span> {{this.realName}}
+                        </p>
+                        <p class="card-text"><span class="fw-bold">Genres:</span> {{this.nicknames}}</p>
+                        <a href="/casts/detail/{{this.id}}" class="btn btn-primary mx-auto d-block">More</a>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>

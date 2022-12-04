@@ -53,6 +53,7 @@ router.get('/search', async function (req, res) {
     titleSample: titleSample,
     movies: pagingMovies,
     page: page,
+    pageSize: pageSize,
     prevPage: (page == 1) ? +page : (+page - 1),
     nextPage: +page + 1
   });

@@ -15,63 +15,128 @@ console.log("Connect to PostgresSQL: " + DB);
 
 module.exports = {
   user: {
-      all: async () => {
-        const users = await DB.any('SELECT * FROM users');
-        return users;
-      },
-      add: async (data) => {
-        const res = await DB.one('INSERT INTO users(id, username, password) VALUES($1, $2, $3) RETURNING *',
+    add: async (data) => {
+      let res = {};
+      try {
+        res = await DB.one('INSERT INTO users(id, username, password) VALUES($1, $2, $3) RETURNING *',
           [data.id, data.username, data.password]);
-        return res;
-      },
-      findByName: async (username) => {
-        const user = await DB.one('SELECT * FROM users WHERE username=$1', [username]);
-        return user;
+      } catch (ex) {
+        console.log(ex);
       }
+      return res;
     },
+    findByName: async (username) => {
+      let user = {};
+      try {
+        user = await DB.one('SELECT * FROM users WHERE username=$1', [username]);
+      } catch (e) {
+        console.log(e);
+      };
+      return user;
+    }
+  },
   movie: {
     all: async () => {
-      const movies = await DB.any('SELECT * FROM movies');
+      let movies = [];
+      try {
+        movies = await DB.any('SELECT * FROM movies');
+      } catch (e) {
+        console.log(e);
+      }
       return movies;
     },
 
     findById: async (id) => {
-      const movie = await DB.one('SELECT * FROM movies WHERE id=$1', [id]);
+      let movie = {};
+      try {
+        movie = await DB.one('SELECT * FROM movies WHERE id=$1', [id]);
+      } catch (e) {
+        console.log(e);
+      }
       return movie;
     },
 
     findByTitle: async (title) => {
-      const movies = await DB.any('SELECT * FROM movies WHERE title LIKE \'%$1#%\' OR genres LIKE \'%$1#%\'', [title]);
+      let movies = {};
+      try {
+        movies = await DB.any('SELECT * FROM movies WHERE title LIKE \'%$1#%\' OR genres LIKE \'%$1#%\'', [title]);
+      } catch (e) {
+        console.log(e);
+      }
       return movies;
     },
 
     findFavoritesByUserId: async (userId) => {
-      const favourites = await DB.any("SELECT * FROM user_favorites WHERE userid=$1", [userId]);
+      let favourites = [];
+      try {
+        favourites = await DB.any("SELECT * FROM user_favorites WHERE userid=$1", [userId]);
+      } catch (e) {
+        console.log(e);
+      };
+
       const distinctMovieId = favourites.map(favourite => favourite.movieid)
-        .filter((v, i, a) => a.indexOf(v) === i)
+        .filter((v, i, a) => a.indexOf(v) === i);
+
       let movies = [];
       for (const movieId of distinctMovieId) {
-        const movie = await DB.one("SELECT * FROM movies WHERE id=$1", [movieId]);
+        let movie = {};
+        try {
+          movie = await DB.one("SELECT * FROM movies WHERE id=$1", [movieId]);
+        } catch (e) {
+          console.log(e);
+          continue;
+        }
         movies.push(movie);
       }
       return movies;
     },
     addFavorites: async (data) => {
-      const res = await DB.one('INSERT INTO user_favorites(id, userId, movieId) VALUES($1, $2, $3) RETURNING *',
-        [data.id, data.userId, data.movieId]);
+      let res = {};
+      try {
+        res = await DB.one('INSERT INTO user_favorites(id, userId, movieId) VALUES($1, $2, $3) RETURNING *',
+          [data.id, data.userId, data.movieId]);
+      } catch (e) {
+        console.log(e);
+      }
       return res;
     },
     removeFavorite: async (id) => {
-      await DB.query('DELETE FROM user_favorites WHERE movieid=$1', [id]);
-    },
-    delete: async (uid) => {
-      await DB.query('DELETE FROM products WHERE uid=$1', [uid]);
+      try {
+        await DB.query('DELETE FROM user_favorites WHERE movieid=$1', [id]);
+      } catch (e) {
+        console.log(e);
+      }
     }
   },
   review: {
     findAllyByMovieId: async (movieId) => {
-      const reviews = await DB.any('SELECT * FROM reviews WHERE movieid=$1', [movieId]);
+      let reviews = [];
+      try {
+        reviews = await DB.any('SELECT * FROM reviews WHERE movieid=$1', [movieId]);
+      } catch (e) {
+        console.log(e);
+      }
       return reviews;
+    }
+  },
+  cast: {
+    findById: async (id) => {
+      let cast = {};
+      try {
+        await DB.one('SELECT * FROM casts WHERE id=$1', [id]);
+      } catch (e) {
+        console.log(e);
+      }
+      return cast;
+    },
+    findByName: async (name) => {
+      let casts = [];
+      try {
+        casts = await DB.any('SELECT * FROM casts WHERE name LIKE \'%$1#%\'', [name]);
+      } catch (e) {
+        console.log(e);
+      }
+      return casts;
     }
   }
 };
