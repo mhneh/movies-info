@@ -16,7 +16,6 @@ router.get('/', async function(req, res, next) {
   const bestRating = movies.map(movie => movie.rating).reduce(function(prev, current) {
     return (prev.y > current.y) ? prev : current;
   });
-  console.log(bestRating);
   const bestRatingMovies = movies.filter(movie => movie.rating == bestRating);
   res.render('index', { movies: bestRatingMovies });
 });
@@ -50,6 +49,8 @@ router.post('/login', async function (req, res) {
   }
   req.session.uid = user.id;
   req.session.username = user.username;
+  req.session.loggedIn = true;
+  res.locals.loggedIn = true;
 
   res.redirect('/');
 });
@@ -77,8 +78,10 @@ router.post('/register', async function (req, res) {
 router.get('/logout', function (req, res) {
   delete req.session.uid;
   delete req.session.username;
+  delete req.session.loggedIn;
   res.clearCookie('uid');
   res.clearCookie('username');
+  res.locals.loggedIn = false;
 
   res.redirect("/login");
 })

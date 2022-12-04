@@ -19,7 +19,7 @@ module.exports = {
       let res = {};
       try {
         res = await DB.one('INSERT INTO users(id, username, password) VALUES($1, $2, $3) RETURNING *',
-          [data.id, data.username, data.password]);
+          [data.uid, data.username, data.password]);
       } catch (ex) {
         console.log(ex);
       }

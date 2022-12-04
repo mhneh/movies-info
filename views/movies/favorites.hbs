@@ -17,11 +17,18 @@
             <tbody>
             {{#each movies}}
                 <tr>
+
                     <th scope="row">{{@index}}</th>
                     <td>
+                        <a href="/movies/detail/{{this.id}}">
                         <img src={{this.img}} class="img-thumbnail" alt="..." width="100">
+                        </a>
                     </td>
-                    <td>{{this.title}}</td>
+                    <td>
+                        <a href="/movies/detail/{{this.id}}">
+                        {{this.title}}
+                        </a>
+                    </td>
                     <td>{{this.year}}</td>
                     <td>{{this.topRank}}</td>
                     <td>{{this.rating}}</td>

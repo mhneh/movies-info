@@ -25,15 +25,32 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/movies', movieRouter);
-app.use('/casts', castRouter);
-
 app.use(function (req, res, next) {
-  console.log(req.cookies);
-  console.log("cc");
+  const uid = req.cookies.uid;
+  const username = req.cookies.username;
+  if (uid || username) {
+    req.session.uid = uid;
+    req.session.username = username;
+    res.locals.loggedIn = true;
+  }
   next();
 });
+
+function needLogin(req, res, next) {
+  const uid = req.cookies.uid;
+  const username = req.cookies.username;
+  if (!uid || !username) {
+    res.status(403);
+    res.render('error');
+  };
+  next();
+}
+
+app.use('/', indexRouter);
+app.use('/movies', needLogin, movieRouter);
+app.use('/casts', needLogin, castRouter);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
