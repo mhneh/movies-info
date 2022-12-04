@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <h1 class="text-center mb-3">Search for title "{{titleSample}}"</h1>
+        <table class="table table-hover table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Img</th>
+                <th scope="col">Title</th>
+                <th scope="col">Year</th>
+                <th scope="col">Top Rank</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Genres</th>
+                <th scope="col">#</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each movies}}
+                <tr>
+                    <td>
+                        <img src={{this.img}} class="img-thumbnail" alt="..." width="100">
+                    </td>
+                    <td>{{this.title}}</td>
+                    <td>{{this.year}}</td>
+                    <td>{{this.topRank}}</td>
+                    <td>{{this.rating}}</td>
+                    <td>{{this.genres}}</td>
+                    <td>
+                        <a href='/movies/favorites/{{this.id}}' class="btn btn-success">Add To Favorites</a>
+                    </td>
+                </tr>
+
+            {{/each}}
+            </tbody>
+        </table>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="/movies/search?movieName={{titleSample}}&&page={{prevPage}}">Previous</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link active" href="/movies/search?movieName={{titleSample}}&&page={{prevPage}}">{{prevPage}}</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link active" href="/movies/search?movieName={{titleSample}}&&page={{page}}">{{page}}</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link active" href="/movies/search?movieName={{titleSample}}&&page={{nextPage}}">{{nextPage}}</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="/movies/search?movieName={{titleSample}}&&page={{nextPage}}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
